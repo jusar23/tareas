@@ -1,0 +1,52 @@
+<form [formGroup]="taskForm" (ngSubmit)="submitTask()">
+    
+    <label for="name">Nombre de la Tarea</label>
+    <input id="name" formControlName="name" />
+    <div *ngIf="taskForm.get('name')?.invalid && taskForm.get('name')?.touched">
+      El nombre es obligatorio y debe tener al menos 5 caracteres.
+    </div>
+  
+   
+    <label for="deadline">Fecha Límite</label>
+    <input type="date" id="deadline" formControlName="deadline" />
+    <div *ngIf="taskForm.get('deadline')?.invalid && taskForm.get('deadline')?.touched">
+      La fecha límite es obligatoria.
+    </div>
+  
+    
+    <div formArrayName="people">
+      <div *ngFor="let person of people.controls; let i = index" [formGroupName]="i">
+        <h4>Persona {{ i + 1 }}</h4>
+  
+       
+        <label for="fullName">Nombre Completo</label>
+        <input id="fullName" formControlName="fullName" />
+        <div *ngIf="person.get('fullName')?.invalid && person.get('fullName')?.touched">
+          El nombre es obligatorio y debe tener al menos 5 caracteres.
+        </div>
+  
+        
+        <label for="age">Edad</label>
+        <input id="age" type="number" formControlName="age" />
+        <div *ngIf="person.get('age')?.invalid && person.get('age')?.touched">
+          La edad debe ser mayor a 18 años.
+        </div>
+  
+        
+        <div formArrayName="skills">
+          <h5>Habilidades</h5>
+          <div *ngFor="let skill of getSkills(i).controls; let j = index" [formGroupName]="j">
+            <input [formControlName]="j" placeholder="Habilidad" />
+            <button type="button" (click)="removeSkill(i, j)">Eliminar Habilidad</button>
+          </div>
+          <button type="button" (click)="addSkill(i)">Añadir Habilidad</button>
+        </div>
+  
+        <button type="button" (click)="removePerson(i)">Eliminar Persona</button>
+      </div>
+    </div>
+  
+    <button type="button" (click)="addPerson()">Añadir Persona</button>
+    <button type="submit" [disabled]="taskForm.invalid">Guardar Tarea</button>
+  </form>
+  

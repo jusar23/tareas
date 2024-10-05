@@ -1,0 +1,18 @@
+<div>
+    
+    <div>
+      <button (click)="filterTasks('all')">Todas</button>
+      <button (click)="filterTasks('completed')">Completadas</button>
+      <button (click)="filterTasks('pending')">Pendientes</button>
+    </div>
+  
+  
+    <ul>
+      <li *ngFor="let task of tasks$ | async">
+        <span [ngClass]="{ 'completed-task': task.completed }">{{ task.name }}</span>
+        <span>{{ task.deadline | date }}</span>
+        <button *ngIf="!task.completed" (click)="completeTask(task.id)">Marcar como Completada</button>
+      </li>
+    </ul>
+  </div>
+  
